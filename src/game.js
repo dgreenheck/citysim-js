@@ -1,5 +1,5 @@
 import { createScene } from './scene.js';
-import { createCity } from './city.js';
+import { City } from './city.js';
 
 // Create a new game when the window is loaded
 window.onload = () => {
@@ -25,7 +25,7 @@ export function createGame() {
   let lastMove = new Date();
 
   const scene = createScene();
-  const city = createCity(12);
+  const city = new City(12);
 
   scene.initialize(city);
 

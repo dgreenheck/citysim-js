@@ -46,6 +46,9 @@ export class Building {
   toHTML() {
     let html = '';
     html += '<br><strong>Building</strong><br>';
+    html += `Name: ${this.name}<br>`;
+    html += `Type: ${this.type}<br>`;
+    
     return html;
   }
 }

@@ -1,4 +1,5 @@
 import { Building } from './building.js';
+import { City } from '../city.js';
 
 /**
  * Represents a residential, commercial or industrial zone
@@ -9,15 +10,27 @@ export class Zone extends Building {
 
     this.style = Math.floor(3 * Math.random()) + 1
     this.height = 1;
+    this.hasRoadAccess = false;
   }
 
+  update(city) {
+    // Continuously check for road access if this zone does not have
+    // road access
+    if (!this.hasRoadAccess) {
+      this.updateRoadAccess(city);
+    }
+  }
   /**
    * Returns true if this building has road access
-   * @param {object} city Reference to the city data model
+   * @param {City} city Reference to the city data model
    */
-  hasRoadAccess(city) {
-    const result = this.city.findTile();
-    return result !== null;
+  updateRoadAccess(city) {
+    // Road must be within 2 tiles
+    const road = city.findTile(this, (tile) => {
+      
+    }, 2);
+
+    return (road !== null);
   }
 
   /**
@@ -26,7 +39,6 @@ export class Zone extends Building {
    */
   toHTML() {
     let html = super.toHTML();
-    html += `Type: ${this.type}<br>`;
     html += `Style: ${this.style}<br>`;
     html += `Height: ${this.height}<br>`;
     return html;
