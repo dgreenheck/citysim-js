@@ -89,7 +89,7 @@ export function createCitizen(house) {
         }
   
         return false;
-      })
+      }, 5);
   
       if (tile) {
         // Employ the citizen at the building

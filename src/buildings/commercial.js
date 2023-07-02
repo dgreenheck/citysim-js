@@ -1,76 +1,68 @@
-export function createCommercialZone(x, y) {
-  return {
-    /* PROPERTIES */
+import { Zone } from './zone.js';
 
-    id: crypto.randomUUID(),
-    name: generateBusinessName(),
-    type: 'commercial',
-    x,
-    y,
-    style: Math.floor(3 * Math.random()) + 1,
-    height: 1,
-    updated: true,
+export class CommercialZone extends Zone {
+  constructor(x, y, city) {
+    super(x, y, city);
+
+    this.type = 'commercial';
+    this.name = generateBusinessName(),
 
     // Citizens that work here
-    workers: [],
+    this.workers = [];
     // Maximum number of workers this building can support
-    maxWorkers: 4,
+    this.maxWorkers = 4;
+  }
 
-    /* METHODS */
-    numberOfJobsAvailable() {
-      return this.maxWorkers - this.workers.length;
-    },
+  numberOfJobsAvailable() {
+    return this.maxWorkers - this.workers.length;
+  }
 
-    numberOfJobsFilled() {
-      return this.workers.length;
-    },
-
-    /**
-     * Updates the state of this building by one simulation step
-     * @param {object} city 
-     */
-    update(city) {
-      if (Math.random() < 0.02) {
-        if (this.height < 5) {
-          this.height += 1;
-          this.updated = true;
-        }
+  numberOfJobsFilled() {
+    return this.workers.length;
+  }
+    
+  /**
+   * Updates the state of this building by one simulation step
+   * @param {object} city 
+   */
+  update(city) {
+    if (Math.random() < 0.02) {
+      if (this.height < 5) {
+        this.height += 1;
+        this.updated = true;
       }
-    },
-
-    /**
-     * Handles any clean up needed before a building is removed
-     */
-    dispose() {
-
-    },
-
-    /**
-     * Returns an HTML representation of this object
-     * @returns {string}
-     */
-    toHTML() {
-      let html = '';
-      html += '<br><strong>Building</strong><br>';
-      html += `Name: ${this.name}<br>`;
-      html += `Type: ${this.type}<br>`;
-      html += `Style: ${this.style}<br>`;
-      html += `Height: ${this.height}<br>`;
-
-      html += `<br><strong>Workers (${this.numberOfJobsFilled()}/${this.maxWorkers})</strong>`;
-
-      html += '<ul style="margin-top: 0; padding-left: 20px;">';
-      if (this.workers.length > 0) {
-        for (const worker of this.workers) {
-          html += worker.toHTML();
-        }
-      } else {
-        html += '<li>None</li>'
-      }
-      html += '</ul>';
-
-      return html;
     }
+  }
+
+  /**
+   * Handles any clean up needed before a building is removed
+   */
+  dispose() {
+    for (const worker of this.workers) {
+      worker.setJob(null);
+    }
+  }
+
+  /**
+   * Returns an HTML representation of this object
+   * @returns {string}
+   */
+  toHTML() {
+    let html = super.toHTML();
+
+    html += `<br><strong>Workers (${this.numberOfJobsFilled()}/${this.maxWorkers})</strong>`;
+
+    html += '<ul style="margin-top: 0; padding-left: 20px;">';
+    if (this.workers.length > 0) {
+      for (const worker of this.workers) {
+        html += worker.toHTML();
+      }
+    } else {
+      html += '<li>None</li>'
+    }
+    html += '</ul>';
+
+    return html;
   }
 }
 

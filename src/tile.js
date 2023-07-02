@@ -1,4 +1,4 @@
-import { createBuilding } from './buildings/buildings.js';
+import { createBuilding } from './buildings/buildingFactory.js';
 
 /**
  * Creates a new tile object
